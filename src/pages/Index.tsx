@@ -73,6 +73,7 @@ const Index = () => {
     `;
 
     try {
+      console.log('Starting resume analysis...');
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -80,7 +81,7 @@ const Index = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'mixtral-8x7b-32768',
+          model: 'llama3-8b-8192',
           messages: [
             {
               role: 'system',
@@ -96,19 +97,28 @@ const Index = () => {
         }),
       });
 
+      console.log('API Response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        throw new Error(`API request failed: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('API Response data:', data);
+      
       const content = data.choices[0].message.content;
+      console.log('AI Response content:', content);
       
       // Extract JSON from the response
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
+        const result = JSON.parse(jsonMatch[0]);
+        console.log('Parsed analysis result:', result);
+        return result;
       } else {
-        throw new Error('Invalid response format');
+        throw new Error('Invalid response format - no JSON found');
       }
     } catch (error) {
       console.error('Analysis error:', error);
@@ -136,7 +146,10 @@ const Index = () => {
 
     setIsAnalyzing(true);
     try {
+      console.log('Extracting text from file:', file.name);
       const resumeText = await extractTextFromFile(file);
+      console.log('Extracted text length:', resumeText.length);
+      
       const result = await analyzeResume(resumeText);
       setAnalysisResult(result);
       toast({
