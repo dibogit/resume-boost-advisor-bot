@@ -4,38 +4,33 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
-interface ScoreDisplayProps {
-  score: number;
-  grade: string;
-}
-
-const ScoreDisplay = ({ score, grade }: ScoreDisplayProps) => {
-  const getScoreColor = (score: number) => {
+const ScoreDisplay = ({ score, grade }) => {
+  const getScoreColor = (score) => {
     if (score >= 80) return "text-green-600";
     if (score >= 60) return "text-yellow-600";
     return "text-red-600";
   };
 
-  const getProgressColor = (score: number) => {
+  const getProgressColor = (score) => {
     if (score >= 80) return "bg-green-500";
     if (score >= 60) return "bg-yellow-500";
     return "bg-red-500";
   };
 
-  const getGradeColor = (grade: string) => {
+  const getGradeColor = (grade) => {
     if (grade.startsWith('A')) return "bg-green-100 text-green-800 border-green-200";
     if (grade.startsWith('B')) return "bg-blue-100 text-blue-800 border-blue-200";
     if (grade.startsWith('C')) return "bg-yellow-100 text-yellow-800 border-yellow-200";
     return "bg-red-100 text-red-800 border-red-200";
   };
 
-  const getScoreIcon = (score: number) => {
+  const getScoreIcon = (score) => {
     if (score >= 80) return <TrendingUp className="h-5 w-5 text-green-600" />;
     if (score >= 60) return <Minus className="h-5 w-5 text-yellow-600" />;
     return <TrendingDown className="h-5 w-5 text-red-600" />;
   };
 
-  const getScoreMessage = (score: number) => {
+  const getScoreMessage = (score) => {
     if (score >= 90) return "Excellent! Your resume is highly ATS-optimized.";
     if (score >= 80) return "Great! Your resume should pass most ATS systems.";
     if (score >= 70) return "Good! A few improvements will boost your ATS score.";

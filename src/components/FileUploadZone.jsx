@@ -2,25 +2,21 @@
 import { useState, useRef } from 'react';
 import { Upload, File, X } from 'lucide-react';
 
-interface FileUploadZoneProps {
-  onFileUpload: (file: File) => void;
-}
-
-const FileUploadZone = ({ onFileUpload }: FileUploadZoneProps) => {
+const FileUploadZone = ({ onFileUpload }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef(null);
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
     
@@ -32,14 +28,14 @@ const FileUploadZone = ({ onFileUpload }: FileUploadZoneProps) => {
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
     if (file && isValidFile(file)) {
       onFileUpload(file);
     }
   };
 
-  const isValidFile = (file: File) => {
+  const isValidFile = (file) => {
     const validTypes = ['text/plain', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     return validTypes.includes(file.type) || file.name.endsWith('.txt') || file.name.endsWith('.pdf') || file.name.endsWith('.doc') || file.name.endsWith('.docx');
   };

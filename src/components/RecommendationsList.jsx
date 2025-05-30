@@ -4,19 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
-interface RecommendationsListProps {
-  strengths: string[];
-  improvements: string[];
-  keywordOptimization: string;
-  formatting: string;
-}
-
 const RecommendationsList = ({ 
   strengths, 
   improvements, 
   keywordOptimization, 
   formatting 
-}: RecommendationsListProps) => {
+}) => {
   return (
     <div className="space-y-6">
       {/* Strengths */}

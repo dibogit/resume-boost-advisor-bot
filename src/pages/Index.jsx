@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Upload, FileText, Zap, CheckCircle, AlertCircle, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,27 +13,17 @@ import RecommendationsList from '@/components/RecommendationsList';
 const API_KEY = "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";
 const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-interface AnalysisResult {
-  atsScore: number;
-  overallGrade: string;
-  strengths: string[];
-  improvements: string[];
-  keywordOptimization: string;
-  formatting: string;
-  summary: string;
-}
-
 const Index = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [analysisResult, setAnalysisResult] = useState(null);
   const { toast } = useToast();
 
-  const extractTextFromFile = async (file: File): Promise<string> => {
+  const extractTextFromFile = async (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const text = e.target?.result as string;
+        const text = e.target?.result;
         resolve(text);
       };
       reader.onerror = (e) => reject(e);
@@ -42,7 +31,7 @@ const Index = () => {
     });
   };
 
-  const analyzeResume = async (resumeText: string): Promise<AnalysisResult> => {
+  const analyzeResume = async (resumeText) => {
     const prompt = `
     Analyze this resume for ATS (Applicant Tracking System) compatibility and provide a comprehensive evaluation. 
     
@@ -126,7 +115,7 @@ const Index = () => {
     }
   };
 
-  const handleFileUpload = (uploadedFile: File) => {
+  const handleFileUpload = (uploadedFile) => {
     setFile(uploadedFile);
     toast({
       title: "File uploaded successfully",
@@ -168,13 +157,13 @@ const Index = () => {
     }
   };
 
-  const getScoreColor = (score: number) => {
+  const getScoreColor = (score) => {
     if (score >= 80) return "text-green-600";
     if (score >= 60) return "text-yellow-600";
     return "text-red-600";
   };
 
-  const getGradeColor = (grade: string) => {
+  const getGradeColor = (grade) => {
     if (grade.startsWith('A')) return "bg-green-100 text-green-800";
     if (grade.startsWith('B')) return "bg-blue-100 text-blue-800";
     if (grade.startsWith('C')) return "bg-yellow-100 text-yellow-800";
